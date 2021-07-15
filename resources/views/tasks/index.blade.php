@@ -13,11 +13,14 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($task_list as $tasks)
+                @foreach ($task_list as $task)
                 <tr>
-                    {{-- メッセージ詳細ページへのリンク --}}
-                    <td>{!! link_to_route('tasks.show', $tasks->id, ['task_list' => $tasks->id]) !!}</td>
-                    <td>{{ $tasks->content }}</td>
+                    
+                    
+                    {{-- タスク詳細ページへのリンク --}}
+                    
+                    <td>{!! link_to_route('tasks.show', $task->id, ['task' => $task->id]) !!}</td>
+                    <td>{{ $task->content }}</td>
                 </tr>
                 @endforeach
             </tbody>

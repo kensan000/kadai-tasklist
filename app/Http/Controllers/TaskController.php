@@ -13,7 +13,8 @@ class TaskController extends Controller
     {
         // タスク一覧を取得
         $tasks = Task::all();
-
+        
+        
         // タスク一覧ビューでそれを表示
         return view('tasks.index', [
             'task_list' => $tasks,
@@ -28,7 +29,7 @@ class TaskController extends Controller
 
         // タスク作成ビューを表示
         return view('tasks.create', [
-            'task_list' => $tasks,
+            'tasks' => $tasks,
         ]);
     }
 
@@ -52,7 +53,7 @@ class TaskController extends Controller
 
         // タスク詳細ビューでそれを表示
         return view('tasks.show', [
-            'task_list' => $tasks,
+            'tasks' => $tasks,
         ]);
     }
 
@@ -64,7 +65,7 @@ class TaskController extends Controller
 
         // タスク編集ビューでそれを表示
         return view('tasks.edit', [
-            'task_list' => $tasks,
+            'tasks' => $tasks,
         ]);
     }
 
