@@ -16,19 +16,18 @@
         </div>
     </nav>
 </header>
-app.blade.php では header の部分を削除し、替わりに上記のBladeファイルを @include します。
 
-resources/views/layouts/app.blade.phpのbody要素内
+
+
 
     <body>
 
-        {{-- ナビゲーションバー --}}
-        @include('commons.navbar')
+
 
         <div class="container">
             @yield('content')
         </div>
 
-        <!-- JavaScriptの指定は省略 -->
+
 
     </body>
