@@ -11,14 +11,18 @@ class TaskController extends Controller
     // getでtasks/にアクセスされた場合の「一覧表示処理」
     public function index()
     {
-    
-        // タスク一覧を取得
-        $tasks = Task::all();
         
-        // タスク一覧ビューでそれを表示
-        return view('tasks.index', [
-            'task_list' => $tasks,
-        ]);
+            // 認証済みタスク一覧を取得
+            $tasks = Task::where('user_id',\Auth::id())->get();
+        
+            
+            
+            // タスク一覧ビューでそれを表示
+            return view('tasks.index', [
+                'task_list' => $tasks,
+            ]);
+          
+       
         
     }
 
@@ -43,11 +47,16 @@ class TaskController extends Controller
             'content' => 'required',
             ]);
         
+
+            
+        
+        
         // タスクを作成
   
         $tasks = new Task;
         $tasks->content = $request->content;
         $tasks->status = $request->status;
+        $tasks->user_id = \Auth::user()->id; 
         $tasks->save();
 
         // トップページへリダイレクトさせる
@@ -58,24 +67,36 @@ class TaskController extends Controller
     public function show($id)
     {
         // idの値でタスクを検索して取得
-        $tasks = Task::findOrFail($id);
+        $tasks = Task::where('user_id',\Auth::id())->find($id);
+        if($tasks) {
+            // タスク詳細ビューでそれを表示
+            return view('tasks.show', [
+                'tasks' => $tasks,
+            ]);
+        }
+        else{
+            return redirect('/');
+        }
+    }    
 
-        // タスク詳細ビューでそれを表示
-        return view('tasks.show', [
-            'tasks' => $tasks,
-        ]);
-    }
+        
+
 
     // getでtasks/（任意のid）/editにアクセスされた場合の「更新画面表示処理」
     public function edit($id)
     {
         // idの値でタスクを検索して取得
-        $tasks = Task::findOrFail($id);
-
-        // タスク編集ビューでそれを表示
-        return view('tasks.edit', [
-            'tasks' => $tasks,
-        ]);
+        
+        $tasks = Task::where('user_id',\Auth::id())->find($id);
+        if($tasks) {
+            // タスク詳細ビューでそれを表示
+            return view('tasks.edit', [
+                'tasks' => $tasks,
+            ]);
+        }
+        else{
+            return redirect('/');
+        }
     }
 
     // putまたはpatchでtasks/（任意のid）にアクセスされた場合の「更新処理」
@@ -92,6 +113,7 @@ class TaskController extends Controller
         // タスクを更新
         $tasks->status = $request->status;    // 追加
         $tasks->content = $request->content;
+        $tasks->user_id = \Auth::user()->id;
         $tasks->save();
 
         // トップページへリダイレクトさせる
